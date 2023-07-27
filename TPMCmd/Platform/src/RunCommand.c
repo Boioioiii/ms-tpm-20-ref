@@ -48,6 +48,7 @@
 
 //** Includes and locals
 #include "Platform.h"
+#include <stdio.h>>
 #include <setjmp.h>
 #include "ExecCommand_fp.h"
 
@@ -69,6 +70,11 @@ LIB_EXPORT void _plat__RunCommand(
     unsigned char** response       // IN/OUT: response buffer
 )
 {
+    printf("This is the RunCommand\n");
+    printf("This is the requestSize aka command buffer size: %d\n",requestSize);
+    printf("This is the request, aka command buffer: %c \n",request);
+    printf("This is the response size aka response buffer size: %d\n",responseSize);
+    printf("This is the response buffer: %c\n",response);
     setjmp(s_jumpBuffer);
     ExecuteCommand(requestSize, request, responseSize, response);
 }
