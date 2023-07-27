@@ -78,7 +78,6 @@ LIB_EXPORT void _plat__RunCommand(
     setjmp(s_jumpBuffer);
     ExecuteCommand(requestSize, request, responseSize, response);
 }
-
 //***_plat__Fail()
 // This is the platform depended failure exit for the TPM.
 LIB_EXPORT NORETURN void _plat__Fail(void)
