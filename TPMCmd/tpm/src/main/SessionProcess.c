@@ -41,7 +41,7 @@
 //**  Includes and Data Definitions
 
 #define SESSION_PROCESS_C
-
+#include<stdio.h>
 #include "Tpm.h"
 #include "ACT.h"
 #include "Marshal.h"
@@ -64,6 +64,7 @@
 BOOL IsDAExempted(TPM_HANDLE handle  // IN: entity handle
 )
 {
+    printf("we are in IsDAExempted\n");
     BOOL result = FALSE;
     //
     switch(HandleGetType(handle))
@@ -108,6 +109,7 @@ BOOL IsDAExempted(TPM_HANDLE handle  // IN: entity handle
 //                          increment
 static TPM_RC IncrementLockout(UINT32 sessionIndex)
 {
+    printf("We are in IncrementLockout\n");
     TPM_HANDLE handle        = s_associatedHandles[sessionIndex];
     TPM_HANDLE sessionHandle = s_sessionHandles[sessionIndex];
     SESSION*   session       = NULL;
@@ -187,6 +189,7 @@ static BOOL IsSessionBindEntity(
     SESSION*   session            // IN: associated session
 )
 {
+    printf("we are in isSessionBindEnitiy\n");
     TPM2B_NAME entity;  // The bind value for the entity
                         //
     // If the session is not bound, return FALSE.
@@ -222,6 +225,7 @@ static BOOL IsPolicySessionRequired(COMMAND_INDEX commandIndex,  // IN: command 
                                     UINT32        sessionIndex   // IN: session index
 )
 {
+    printf("We are in isPolicySessionREquired\n");
     AUTH_ROLE role = CommandAuthRole(commandIndex, sessionIndex);
     TPM_HT    type = HandleGetType(s_associatedHandles[sessionIndex]);
     //
@@ -278,6 +282,7 @@ static BOOL IsAuthValueAvailable(TPM_HANDLE    handle,        // IN: handle of e
                                  UINT32        sessionIndex   // IN: session index
 )
 {
+    printf("we are in, if authValueAvaliable\n");
     BOOL result = FALSE;
     //
     switch(HandleGetType(handle))
@@ -412,6 +417,8 @@ static BOOL IsAuthPolicyAvailable(TPM_HANDLE    handle,        // IN: handle of 
                                   UINT32        sessionIndex   // IN: session index
 )
 {
+
+    printf("we are in isAUthPolicyAvaliable\n");
     BOOL result = FALSE;
     //
     switch(HandleGetType(handle))
@@ -509,6 +516,7 @@ static BOOL IsAuthPolicyAvailable(TPM_HANDLE    handle,        // IN: handle of 
 //*** ClearCpRpHashes()
 void ClearCpRpHashes(COMMAND* command)
 {
+    printf("we are in clearcprphashes\n");
     // The macros expand according to the implemented hash algorithms. An IDE may
     // complain that COMMAND does not contain SHA1CpHash or SHA1RpHash because of the
     // complexity of the macro expansion where the data space is defined; but, if SHA1
@@ -523,6 +531,7 @@ void ClearCpRpHashes(COMMAND* command)
 // Function to get a pointer to the cpHash of the command
 static TPM2B_DIGEST* GetCpHashPointer(COMMAND* command, TPMI_ALG_HASH hashAlg)
 {
+    printf("we are in GetCpHashPointer\n");
     TPM2B_DIGEST* retVal;
 //
 // Define the macro that will expand for each implemented algorithm in the switch
@@ -550,6 +559,7 @@ static TPM2B_DIGEST* GetCpHashPointer(COMMAND* command, TPMI_ALG_HASH hashAlg)
 // Function to get a pointer to the RpHash of the command
 static TPM2B_DIGEST* GetRpHashPointer(COMMAND* command, TPMI_ALG_HASH hashAlg)
 {
+    printf("we are in getrphashpointer\n");
     TPM2B_DIGEST* retVal;
 //
 // Define the macro that will expand for each implemented algorithm in the switch
@@ -579,6 +589,7 @@ static TPM2B_DIGEST* ComputeCpHash(COMMAND* command,  // IN: command parsing str
                                    TPMI_ALG_HASH hashAlg  // IN: hash algorithm
 )
 {
+    printf("we are in computeCpHash\n");
     UINT32        i;
     HASH_STATE    hashState;
     TPM2B_NAME    name;
@@ -614,6 +625,7 @@ static TPM2B_DIGEST* ComputeCpHash(COMMAND* command,  // IN: command parsing str
 // This function is used to access a precomputed cpHash.
 static TPM2B_DIGEST* GetCpHash(COMMAND* command, TPMI_ALG_HASH hashAlg)
 {
+    printf("we are in getCpHash\n");
     TPM2B_DIGEST* cpHash = GetCpHashPointer(command, hashAlg);
     //
     pAssert(cpHash->t.size != 0);
@@ -632,10 +644,13 @@ static BOOL CompareTemplateHash(COMMAND* command,  // IN: parsing structure
                                 SESSION* session   // IN: session data
 )
 {
+    printf("we are in compateTempleteHash\n");
     BYTE*        pBuffer = command->parameterBuffer;
     INT32        pSize   = command->parameterSize;
     TPM2B_DIGEST tHash;
     UINT16       size;
+
+    printf("we are in CompareTemplateHash\n");
     //
     // Only try this for the three commands for which it is intended
     if(command->code != TPM_CC_Create && command->code != TPM_CC_CreatePrimary
@@ -709,6 +724,8 @@ static TPM_RC CheckPWAuthSession(
     UINT32 sessionIndex  // IN: index of session to be processed
 )
 {
+
+    printf("we are in CheckPWAuthSession\n");
     TPM2B_AUTH authValue;
     TPM_HANDLE associatedHandle = s_associatedHandles[sessionIndex];
     //
@@ -790,7 +807,7 @@ static TPM2B_DIGEST* ComputeCommandHMAC(
     //
     nonceDecrypt = NULL;
     nonceEncrypt = NULL;
-
+    printf("we are in ComputeCommandHMAC\n");
     // Determine if extra nonceTPM values are going to be required.
     // If this is the first session (sessionIndex = 0) and it is an authorization
     // session that uses an HMAC, then check if additional session nonces are to be
@@ -890,6 +907,8 @@ static TPM_RC CheckSessionHMAC(
     UINT32   sessionIndex  // IN: index of session to be processed
 )
 {
+
+    printf("we are in CheckSessionHMAC\n");
     TPM2B_DIGEST hmac;  // authHMAC for comparing
                         //
     // Compute authHMAC
@@ -940,6 +959,7 @@ static TPM_RC CheckPolicyAuthSession(
     TPMI_ALG_HASH policyAlg;
     UINT8         locality;
     //
+    printf("we are in CheckPolicyAuthSession\n");
     // Initialize pointer to the authorization session.
     session = SessionGet(s_sessionHandles[sessionIndex]);
 
@@ -1087,6 +1107,7 @@ static TPM_RC RetrieveSessionData(
     s_encryptSessionIndex = UNDEFINED_INDEX;
     s_auditSessionIndex   = UNDEFINED_INDEX;
 
+    printf("we are in RetrieveSessionData\n");
     for(sessionIndex = 0; command->authSize > 0; sessionIndex++)
     {
         errorIndex = TPM_RC_S + g_rcIndex[sessionIndex];
@@ -1240,6 +1261,8 @@ static TPM_RC CheckLockedOut(
     BOOL lockoutAuthCheck  // IN: TRUE if checking is for lockoutAuth
 )
 {
+
+    printf("we are in CheckLockedOut\n");
     // If NV is unavailable, and current cycle state recorded in NV is not
     // SU_NONE_VALUE, refuse to check any authorization because we would
     // not be able to handle a DA failure.
@@ -1310,6 +1333,8 @@ static TPM_RC CheckAuthSession(
     UINT32   sessionIndex  // IN: index of session to be processed
 )
 {
+
+    printf("we are in CheckAuthSession\n");
     TPM_RC     result            = TPM_RC_SUCCESS;
     SESSION*   session           = NULL;
     TPM_HANDLE sessionHandle     = s_sessionHandles[sessionIndex];
@@ -1448,6 +1473,8 @@ static TPM_RC CheckAuthSession(
 //      TPM_RC_NV_RATE              NV is rate limiting
 static TPM_RC CheckCommandAudit(COMMAND* command)
 {
+
+    printf("we are in CheckCommandAudit\n");
     // If the audit digest is clear and command audit is required, NV must be
     // available so that TPM2_GetCommandAuditDigest() is able to increment
     // audit counter. If NV is not available, the function bails out to prevent
@@ -1483,6 +1510,8 @@ ParseSessionBuffer(COMMAND* command  // IN: the structure that contains
     UINT32     sessionIndex;
     TPM_RC     errorIndex;
     SESSION*   session = NULL;
+
+    printf("we are in ParseSessionBuffer\n");
     //
     // Check if a command allows any session in its session area.
     if(!IsSessionAllowed(command->index))
@@ -1634,6 +1663,8 @@ TPM_RC
 CheckAuthNoSession(COMMAND* command  // IN: command parsing structure
 )
 {
+
+    printf("we are in CheckAuthNoSession\n");
     UINT32 i;
 #if CC_GetCommandAuditDigest
     TPM_RC result = TPM_RC_SUCCESS;
@@ -1676,6 +1707,8 @@ static TPM2B_DIGEST* ComputeRpHash(
     TPM_ALG_ID hashAlg   // IN: hash algorithm to compute rpHash
 )
 {
+
+    printf("we are in ComputeRpHash\n");
     TPM2B_DIGEST* rpHash = GetRpHashPointer(command, hashAlg);
     HASH_STATE    hashState;
     //
@@ -1702,6 +1735,7 @@ static TPM2B_DIGEST* ComputeRpHash(
 static void InitAuditSession(SESSION* session  // session to be initialized
 )
 {
+    printf("we are in InitAuditSession\n");
     // Mark session as an audit session.
     session->attributes.isAudit = SET;
 
@@ -1721,6 +1755,7 @@ static void InitAuditSession(SESSION* session  // session to be initialized
 static void UpdateAuditDigest(
     COMMAND* command, TPMI_ALG_HASH hashAlg, TPM2B_DIGEST* digest)
 {
+    printf("we are in UpdateAuditDigest\n");
     HASH_STATE    hashState;
     TPM2B_DIGEST* cpHash = GetCpHash(command, hashAlg);
     TPM2B_DIGEST* rpHash = ComputeRpHash(command, hashAlg);
@@ -1746,6 +1781,7 @@ static void Audit(COMMAND* command,      // IN: primary control structure
                   SESSION* auditSession  // IN: loaded audit session
 )
 {
+    printf("we are in Audit\n");
     UpdateAuditDigest(
         command, auditSession->authHashAlg, &auditSession->u2.auditDigest);
     return;
@@ -1757,6 +1793,8 @@ static void Audit(COMMAND* command,      // IN: primary control structure
 static void CommandAudit(COMMAND* command  // IN:
 )
 {
+
+    printf("we are in CommandAudit\n");
     // If the digest.size is one, it indicates the special case of changing
     // the audit hash algorithm. For this case, no audit is done on exit.
     // NOTE: When the hash algorithm is changed, g_updateNV is set in order to
@@ -1795,6 +1833,8 @@ static void UpdateAuditSessionStatus(
     COMMAND* command  // IN: primary control structure
 )
 {
+
+    printf("we are in UpdateAuditSessionStatus\n");
     UINT32     i;
     TPM_HANDLE auditSession = TPM_RH_UNASSIGNED;
     //
@@ -1893,6 +1933,8 @@ static void ComputeResponseHMAC(
     TPM2B_DIGEST* hmac           // OUT: authHMAC
 )
 {
+
+    printf("we are in ComputeResponseHMAC\n");
     TPM2B_TYPE(KEY, (sizeof(AUTH_VALUE) * 2));
     TPM2B_KEY     key;  // HMAC key
     BYTE          marshalBuffer[sizeof(TPMA_SESSION)];
@@ -1956,6 +1998,7 @@ static void UpdateInternalSession(SESSION* session,  // IN: the session structur
                                   UINT32   i         // IN: session number
 )
 {
+    printf("we are in UpdateInternalSession\n");
     // If nonce is rolling in a policy session, the policy related data
     // will be re-initialized.
     if(HandleGetType(s_sessionHandles[i]) == TPM_HT_POLICY_SESSION
@@ -1977,6 +2020,7 @@ static TPM2B_NONCE* BuildSingleResponseAuth(
     TPM2B_AUTH* auth           // OUT: authHMAC
 )
 {
+    printf("we are in BuildSingleResponseAuth\n");
     // Fill in policy/HMAC based session response.
     SESSION* session = SessionGet(s_sessionHandles[sessionIndex]);
     //
@@ -1998,6 +2042,7 @@ static TPM2B_NONCE* BuildSingleResponseAuth(
 static void UpdateAllNonceTPM(COMMAND* command  // IN: controlling structure
 )
 {
+    printf("we are in UpdateAllNonceTPM\n");
     UINT32   i;
     SESSION* session;
     //
@@ -2027,6 +2072,7 @@ BuildResponseSession(COMMAND* command  // IN: structure that has relevant comman
                                        //     information
 )
 {
+    printf("we are in BuildResponseSession\n");
     TPM_RC result = TPM_RC_SUCCESS;
 
     pAssert(command->authSize == 0);
@@ -2137,6 +2183,7 @@ Cleanup:
 // UndefineSpaceSpecial().
 void SessionRemoveAssociationToHandle(TPM_HANDLE handle)
 {
+    printf("we are in SessionRemoveAssociationToHandle\n");
     UINT32 i;
     //
     for(i = 0; i < MAX_SESSION_NUM; i++)

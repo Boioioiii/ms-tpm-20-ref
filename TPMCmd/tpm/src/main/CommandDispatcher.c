@@ -34,6 +34,7 @@
  */
 
 //* Includes and Typedefs
+#include<stdio.h>
 #include "Tpm.h"
 #include "Marshal.h"
 
@@ -51,6 +52,8 @@ typedef TPM_RC(COMMAND_NO_ARGS)(void);
 typedef TPM_RC(COMMAND_IN_ARG)(void* in);
 typedef TPM_RC(COMMAND_OUT_ARG)(void* out);
 typedef TPM_RC(COMMAND_INOUT_ARG)(void* in, void* out);
+
+
 
 typedef union COMMAND_t
 {
@@ -123,6 +126,7 @@ typedef struct COMMAND_DESCRIPTOR_t
 // The types list is constructed with a byte of 0xff at the end of the command
 // parameters and with an 0xff at the end of the response parameters.
 
+
 #  if COMPRESSED_LISTS
 #    define PAD_LIST 0
 #  else
@@ -148,6 +152,7 @@ typedef struct COMMAND_DESCRIPTOR_t
 TPM_RC
 ParseHandleBuffer(COMMAND* command)
 {
+    printf("We are in ParseHandleBuffer\n");
     TPM_RC result;
 #if TABLE_DRIVEN_DISPATCH || TABLE_DRIVEN_MARSHAL
     COMMAND_DESCRIPTOR_t* desc;
@@ -243,6 +248,7 @@ ParseHandleBuffer(COMMAND* command)
 TPM_RC
 CommandDispatcher(COMMAND* command)
 {
+printf("We are in command dispatcher\n");
 #if !TABLE_DRIVEN_DISPATCH || TABLE_DRIVEN_MARSHAL
     TPM_RC      result;
     BYTE**      paramBuffer     = &command->parameterBuffer;

@@ -38,7 +38,7 @@
 // control flow for TPM command execution.
 
 //** Includes
-
+#include<stdio.h>
 #include "Tpm.h"
 #include "Marshal.h"
 #include "ExecCommand_fp.h"
@@ -90,6 +90,8 @@ LIB_EXPORT void ExecuteCommand(
     unsigned char** response       // IN/OUT: response buffer
 )
 {
+
+    printf("We are in execute command\n");
     // Command local variables
     UINT32  commandSize;
     COMMAND command;
