@@ -109,7 +109,7 @@ BOOL TpmSizeChecks(void)
 #    endif
 
         printf("This is how we know the text is the owrking version\n");
-        printf("Size of OBJECT = %zu\n", sizeof(OBJECT));
+        printf("Size of OBJECTygouuigilhlihliuhlhlhluhuilhliuhilhulihlihilh = %zu\n", sizeof(OBJECT));
         printf("Size of components in TPMT_SENSITIVE = %zu\n",
                sizeof(TPMT_SENSITIVE));
         printf("    TPMI_ALG_PUBLIC                 %zu\n", sizeof(TPMI_ALG_PUBLIC));
