@@ -108,6 +108,7 @@ BOOL TpmSizeChecks(void)
         printf("sizeof(MarshalData) = %zu\n", sizeof(MarshalData_st));
 #    endif
 
+        printf("This is how we know the text is the owrking version\n");
         printf("Size of OBJECT = %zu\n", sizeof(OBJECT));
         printf("Size of components in TPMT_SENSITIVE = %zu\n",
                sizeof(TPMT_SENSITIVE));
